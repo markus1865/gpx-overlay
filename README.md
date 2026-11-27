@@ -7,6 +7,31 @@ transparent layer over cycling or running footage.
 The script reads GPX and FIT files. It writes an H.265/HEVC MP4. In transparent
 mode it also writes a ProRes 4444 MOV with an alpha channel.
 
+## Examples
+
+Both images below show real output from the script, placed over a sample photo.
+The activity data is synthetic.
+
+![Cycling overlay in speed mode: time, distance, slope, heart rate, speed, average speed, mini-map, and elevation graph](docs/example-cycling.jpg)
+
+*Speed mode on a cycling example.*
+
+![Running overlay in pace mode: time, distance, slope, heart rate, pace, average pace, mini-map, and elevation graph](docs/example-running.jpg)
+
+*Pace mode on a running example.*
+
+### Image credits
+
+1. The cycling photo is "2017-08-12 Anthony Fernando-Road Cycling-2988" by
+   2017 Canada Summer Games. It is licensed under
+   [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/), via
+   [Wikimedia Commons](https://commons.wikimedia.org/w/index.php?curid=65799850).
+   The photo is cropped and resized.
+2. The trail photo is "Muddy Branch Greenway Trail" by G. Edward Johnson. It is
+   licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/),
+   via [Wikimedia Commons](https://commons.wikimedia.org/w/index.php?curid=94949711).
+   The photo is cropped and resized.
+
 ## Features
 
 1. Elapsed time.

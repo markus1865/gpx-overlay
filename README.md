@@ -87,6 +87,18 @@ files:
 1. `activity.mp4` with H.265 and an alpha channel, if FFmpeg supports it.
 2. `activity_transparent.mov` with ProRes 4444 and an alpha channel.
 
+### Demo files
+
+The `examples/` directory contains a synthetic GPX file and a synthetic FIT
+file. Use them to test the script:
+
+```bash
+python gpx-overlay.py examples/demo.gpx
+python gpx-overlay.py examples/demo.fit --stat-mode speed
+```
+
+The data is synthetic. It does not come from a real activity.
+
 ## Options
 
 | Option | Default | Description |
@@ -148,6 +160,17 @@ ffmpeg -i source_video.mp4 -i overlay_transparent.mov \
        -filter_complex "[0:v][1:v]overlay=0:0" \
        -c:v libx265 -crf 18 final_output.mp4
 ```
+
+## Tests
+
+Run the automatic tests:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The GitHub Actions workflow runs these tests and a smoke test on the demo
+files for every pull request.
 
 ## License
 

@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Automatic tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            gpxpy pillow numpy opencv-python-headless fitparse
+
+      - name: Run automatic tests
+        run: python -m unittest discover -s tests -v
+
+  smoke:
+    name: Smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            gpxpy pillow numpy opencv-python-headless fitparse
+
+      - name: Check FFmpeg encoders
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -hide_banner -encoders | grep -q libx265
+          ffmpeg -hide_banner -encoders | grep -q prores_ks
+
+      - name: Run the GPX demo
+        run: |
+          python gpx-overlay.py examples/demo.gpx \
+            --output "$RUNNER_TEMP/demo-gpx.mp4" \
+            --width 320 --height 180 --fps 5 --duration 2
+          test -s "$RUNNER_TEMP/demo-gpx_transparent.mov"
+
+      - name: Run the FIT demo
+        run: |
+          python gpx-overlay.py examples/demo.fit \
+            --output "$RUNNER_TEMP/demo-fit.mp4" \
+            --stat-mode speed \
+            --background greenscreen \
+            --width 320 --height 180 --fps 5 --duration 2
+          test -s "$RUNNER_TEMP/demo-fit.mp4"

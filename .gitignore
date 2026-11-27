@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+examples/*.mp4
+examples/*.mov
